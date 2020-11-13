@@ -94,7 +94,6 @@ class EmojiKeyboard extends StatelessWidget {
                   color: color,
                 ),
                 pinned: !floatingHeader,
-
               ),
             ),
           ];
@@ -230,6 +229,13 @@ class _EmojiKeyboardHeader implements SliverPersistentHeaderDelegate {
 
   @override
   OverScrollHeaderStretchConfiguration get stretchConfiguration => null;
+
+  @override
+  PersistentHeaderShowOnScreenConfiguration get showOnScreenConfiguration =>
+      null;
+
+  @override
+  TickerProvider get vsync => null;
 }
 
 /// CategoryTitles class that used to define all category titles.
