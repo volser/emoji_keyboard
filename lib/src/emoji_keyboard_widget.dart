@@ -140,19 +140,22 @@ class EmojiKeyboard extends StatelessWidget {
                             ),
                             delegate: SliverChildListDelegate.fixed(
                               snapshot.data[index ~/ 2].map((Emoji emoji) {
-                                return CupertinoButton(
-                                  key: ValueKey('${emoji.text}'),
-                                  pressedOpacity: 0.4,
-                                  padding: EdgeInsets.all(0),
-                                  child: Center(
-                                    child: Text(
-                                      '${emoji.text}',
-                                      style: TextStyle(
-                                        fontSize: 26,
+                                return Material(
+                                  type: MaterialType.transparency,
+                                  child: _Button(
+                                    key: ValueKey('${emoji.text}'),
+                                    // pressedOpacity: 0.4,
+                                    // padding: EdgeInsets.all(0),
+                                    child: Center(
+                                      child: Text(
+                                        '${emoji.text}',
+                                        style: TextStyle(
+                                          fontSize: 26,
+                                        ),
                                       ),
                                     ),
+                                    onPressed: () => onEmojiSelected(emoji),
                                   ),
-                                  onPressed: () => onEmojiSelected(emoji),
                                 );
                               }).toList(),
                             ),
@@ -202,15 +205,13 @@ class _EmojiKeyboardHeader implements SliverPersistentHeaderDelegate {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
             8,
-            (index) => CupertinoButton(
-              pressedOpacity: 0.4,
-              padding: EdgeInsets.all(0),
-              borderRadius: BorderRadius.all(Radius.circular(0)),
+            (index) => _Button(
               child: Center(
                 child: Icon(
                   categoryIcons[index],
                   size:
                       (minExtent < maxExtent - 10) ? minExtent : maxExtent - 10,
+                  color: Colors.grey,
                 ),
               ),
               onPressed: () => onClick(index),
@@ -290,6 +291,26 @@ class CategoryTitles {
       ][index];
 }
 
+class _Button extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Widget child;
+
+  const _Button({Key key, this.onPressed, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: child,
+          ),
+          onTap: onPressed,
+        ));
+  }
+}
+
 /// CategoryIcons class that used to define all category icons.
 class CategoryIcons {
   final Color color;
@@ -322,7 +343,7 @@ class CategoryIcons {
   ///
   /// [flags] for [EmojiCategory.flags]
   const CategoryIcons({
-    this.people = Icons.sentiment_satisfied,
+    this.people = Icons.tag_faces,
     this.nature = Icons.pets,
     this.food = Icons.fastfood,
     this.activity = Icons.directions_run,
